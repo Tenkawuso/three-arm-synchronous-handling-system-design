@@ -49,6 +49,84 @@ OpenMV / 串口识别结果
 powershell -ExecutionPolicy Bypass -File .\scripts\run_noetic_smoke.ps1
 ```
 
+## 原生 Ubuntu 运行
+
+下面步骤适用于 Ubuntu 20.04 + ROS Noetic。若是 Ubuntu 22.04，建议继续使用仓库里的 Docker 方案。
+
+### 1. 安装依赖
+
+```bash
+sudo apt update
+sudo apt install -y curl gnupg lsb-release
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros1.list'
+curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+sudo apt update
+sudo apt install -y \
+  ros-noetic-desktop-full \
+  ros-noetic-moveit \
+  ros-noetic-cv-bridge \
+  ros-noetic-ros-control \
+  ros-noetic-ros-controllers \
+  ros-noetic-gazebo-ros-pkgs \
+  ros-noetic-gazebo-ros-control \
+  ros-noetic-rviz \
+  ros-noetic-robot-state-publisher \
+  ros-noetic-joint-state-publisher \
+  ros-noetic-joint-state-publisher-gui \
+  ros-noetic-tf \
+  ros-noetic-tf2-ros \
+  ros-noetic-std-msgs \
+  ros-noetic-visualization-msgs \
+  ros-noetic-sensor-msgs \
+  ros-noetic-xacro \
+  python3-rosdep \
+  python3-serial \
+  python3-numpy \
+  python3-opencv
+sudo rosdep init
+rosdep update
+```
+
+### 2. 编译工作区
+
+```bash
+cd <仓库根目录>/catkin_ws
+source /opt/ros/noetic/setup.bash
+rosdep install --from-paths src --ignore-src -r -y
+catkin_make
+source devel/setup.bash
+```
+
+如果脚本没有执行权限，先运行 `chmod +x catkin_ws/src/three_arm_demo/scripts/*.py`。
+
+### 3. 启动 MoveIt 仿真
+
+```bash
+roslaunch my_three_arms_moveit_config demo.launch
+```
+
+这个模式会启动 fake controller 和 RViz，适合先检查模型和规划是否正常。
+
+### 4. 启动 Gazebo 仿真
+
+```bash
+roslaunch my_three_arms_moveit_config demo_gazebo.launch
+```
+
+这个模式会同时启动 Gazebo 和 MoveIt，适合做更完整的联调。
+
+### 5. 启动业务节点
+
+建议在不同终端分别执行：
+
+```bash
+rosrun three_arm_demo block_transformer.py
+rosrun three_arm_demo three_arm_coordinator.py
+rosrun three_arm_demo openmv_bridge.py
+```
+
+其中 `openmv_bridge.py` 只有在接了 OpenMV 串口模块时才需要运行。如果没有 OpenMV，可以先用 `test_single_arm.py`、`test.py`、`test2.py` 做单臂或调试验证。
+
 ## 说明
 
 当前仓库以仿真和流程验证为主。真实机械臂与相机接入时，主要通过 OpenMV 串口和 MoveIt 接口继续对接。
