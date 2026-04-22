@@ -1,0 +1,13 @@
+<launch>
+  <!-- 加载新 URDF 文件到参数服务器 -->
+  <param name="robot_description" textfile="$(find my_arm_description)/urdf/three_arms_new.urdf" />
+
+  <!-- 发布关节状态（从 joint_state_publisher_gui 接收滑条值） -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <!-- 提供滑条界面，用于手动控制所有关节 -->
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
+
+  <!-- 启动 Rviz 可视化工具 -->
+  <node name="rviz" pkg="rviz" type="rviz" required="true" />
+</launch>

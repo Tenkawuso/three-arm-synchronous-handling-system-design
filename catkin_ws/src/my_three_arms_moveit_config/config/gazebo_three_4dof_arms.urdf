@@ -1,0 +1,1296 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<robot name="three_4dof_arms">
+    <!-- 虚拟世界链接，作为唯一根链接 -->
+    <link name="world" />
+    <!-- 定义一些共用颜色（可选） -->
+    <material name="blue">
+        <color rgba="0.2 0.5 1.0 1.0" />
+    </material>
+    <material name="silver">
+        <color rgba="0.75 0.75 0.75 1.0" />
+    </material>
+    <!-- ========== 臂1 ========== -->
+    <link name="arm1_base_Link">
+        <inertial>
+            <origin xyz="-0.0023876 9.2688E-09 0.024324" rpy="0 0 0" />
+            <mass value="0.13036" />
+            <inertia ixx="0.00013453" ixy="1.9558E-11" ixz="3.785E-06" iyy="0.00014759" iyz="1.2238E-11" izz="0.00021469" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/base_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.039216 0.4902 0.7098 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/base_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="arm1_J1_Link">
+        <inertial>
+            <origin xyz="0.003336 -0.012811 0.024569" rpy="0 0 0" />
+            <mass value="0.10198" />
+            <inertia ixx="5.5023E-05" ixy="-2.0638E-06" ixz="-8.0449E-06" iyy="6.6565E-05" iyz="4.7085E-06" izz="6.2929E-05" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J1_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.91765 0.57647 0 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J1_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm1_J1" type="revolute">
+        <origin xyz="0 0 0.0574" rpy="0 0 0" />
+        <parent link="arm1_base_Link" />
+        <child link="arm1_J1_Link" />
+        <axis xyz="0 0 -1" />
+        <limit lower="0" upper="6.28" effort="0.17658" velocity="8.727" />
+    </joint>
+    <link name="arm1_J2_Link">
+        <inertial>
+            <origin xyz="0.019388 0.0099663 0.052687" rpy="0 0 0" />
+            <mass value="0.06179" />
+            <inertia ixx="8.3164E-05" ixy="-1.8885E-06" ixz="-2.8377E-05" iyy="9.8666E-05" iyz="-3.468E-06" izz="2.0179E-05" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J2_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="1 0.60392 0.10588 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J2_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm1_J2" type="revolute">
+        <origin xyz="0.013658 0.0029828 0.04428" rpy="0 0 0" />
+        <parent link="arm1_J1_Link" />
+        <child link="arm1_J2_Link" />
+        <axis xyz="0.11445 -0.99343 0" />
+        <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727" />
+    </joint>
+    <link name="arm1_J3_Link">
+        <inertial>
+            <origin xyz="0.035646650262344 -0.012699604479704 0.0152846291106878" rpy="0 0 0" />
+            <mass value="0.0981786540068258" />
+            <inertia ixx="2.71238804817978E-05" ixy="-5.71981715265826E-06" ixz="-2.16896367669207E-05" iyy="7.51486478431641E-05" iyz="-2.40806541353186E-06" izz="6.58547599456685E-05" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J3_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.556862745098039 0.556862745098039 0.556862745098039 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J3_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm1_J3" type="revolute">
+        <origin xyz="0.041066 0.004731 0.10676" rpy="0 0 0" />
+        <parent link="arm1_J2_Link" />
+        <child link="arm1_J3_Link" />
+        <axis xyz="0.11445 -0.99343 0" />
+        <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727" />
+    </joint>
+    <link name="arm1_J4_Link">
+        <inertial>
+            <origin xyz="0.0205195365012738 0.0057055734028682 0.00399883468123602" rpy="0 0 0" />
+            <mass value="0.0233897773496103" />
+            <inertia ixx="3.43349236920125E-06" ixy="-8.02083953722184E-07" ixz="-5.77025276397552E-07" iyy="5.19293045487525E-06" iyz="-2.97635751030501E-07" izz="4.27087968264851E-06" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J4_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="1 0.450980392156863 0.0588235294117647 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J4_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm1_J4" type="revolute">
+        <origin xyz="0.088378 -0.0013945 0.044841" rpy="0 0 0" />
+        <parent link="arm1_J3_Link" />
+        <child link="arm1_J4_Link" />
+        <axis xyz="0.90747 0.10454 0.40691" />
+        <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727" />
+    </joint>
+    <link name="arm1_J5_Link">
+        <inertial>
+            <origin xyz="0.030139853478118 -0.00669231765085604 -0.007541437593377" rpy="0 0 0" />
+            <mass value="0.0235598626610195" />
+            <inertia ixx="4.60633454583569E-06" ixy="1.4917505219439E-06" ixz="1.98885287477792E-06" iyy="8.07052867929375E-06" iyz="-4.17767881313178E-07" izz="9.67816355956121E-06" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J5_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.870588235294118 0.396078431372549 0 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J5_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm1_J5" type="revolute">
+        <origin xyz="0.026727 0.018714 0.0079612" rpy="0 0 0" />
+        <parent link="arm1_J4_Link" />
+        <child link="arm1_J5_Link" />
+        <axis xyz="-0.12998 0.99089 0.035284" />
+        <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727" />
+    </joint>
+    <link name="arm1_J611_Link">
+        <inertial>
+            <origin xyz="0.00472114066643811 0.00221776750323123 -0.00249475011588823" rpy="0 0 0" />
+            <mass value="0.00266149879973348" />
+            <inertia ixx="1.69500093721504E-07" ixy="-1.25012959750321E-07" ixz="2.93929282152535E-08" iyy="2.96240805822121E-07" iyz="1.06527511124186E-08" izz="4.52511893148706E-07" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J611_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.619607843137255 0.407843137254902 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J611_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm1_J611" type="revolute">
+        <origin xyz="0.03527 0.014162 -0.012708" rpy="0 0 0" />
+        <parent link="arm1_J5_Link" />
+        <child link="arm1_J611_Link" />
+        <axis xyz="-0.11117 0.020797 -0.99358" />
+        <limit lower="-1.57" upper="0" effort="0.17658" velocity="8.727" />
+    </joint>
+    <link name="arm1_J612_Link">
+        <inertial>
+            <origin xyz="0.0239496852961916 -0.0030312861155509 -0.00702061040058699" rpy="0 0 0" />
+            <mass value="0.00455754616377674" />
+            <inertia ixx="8.77627367069562E-08" ixy="5.5640422020742E-08" ixz="1.48272573930595E-07" iyy="1.38635258742475E-06" iyz="-6.56377203199651E-09" izz="1.3857779119478E-06" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J612_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.619607843137255 0.407843137254902 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J612_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm1_J612" type="fixed">
+        <origin xyz="0.026581 0.01523 -0.0026554" rpy="0 0 0" />
+        <parent link="arm1_J611_Link" />
+        <child link="arm1_J612_Link" />
+        <axis xyz="-0.11117 0.020797 -0.99358" />
+        <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727" />
+    </joint>
+    <!-- 分支2: J613 -->
+    <link name="arm1_J613_Link">
+        <inertial>
+            <origin xyz="0.0130243205091145 0.00758872594558846 -0.00557591371872085" rpy="0 0 0" />
+            <mass value="0.00159752482636938" />
+            <inertia ixx="5.53132600865754E-08" ixy="-8.36790688449769E-08" ixz="1.54277494001416E-08" iyy="1.59347197686967E-07" iyz="8.32683952100482E-09" izz="2.07296511068524E-07" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J613_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.619607843137255 0.407843137254902 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J613_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm1_J613" type="fixed">
+        <origin xyz="0.056015 0.0088959 -0.015139" rpy="0 0 0" />
+        <parent link="arm1_J5_Link" />
+        <child link="arm1_J613_Link" />
+        <axis xyz="-0.11117 0.020797 -0.99358" />
+        <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727" />
+    </joint>
+    <!-- 分支3: J621/622 -->
+    <link name="arm1_J621_Link">
+        <inertial>
+            <origin xyz="0.00532747765601094 -4.59568970913177E-05 -0.00260997638883309" rpy="0 0 0" />
+            <mass value="0.00258512668232471" />
+            <inertia ixx="1.00793684417537E-07" ixy="4.10445722253845E-08" ixz="4.01804406093267E-08" iyy="3.62949122954144E-07" iyz="-6.46103526520651E-09" izz="4.47586978691517E-07" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J621_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.619607843137255 0.407843137254902 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J621_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm1_J621" type="revolute">
+        <origin xyz="0.038792 -0.012691 -0.013664" rpy="0 0 0" />
+        <parent link="arm1_J5_Link" />
+        <child link="arm1_J621_Link" />
+        <axis xyz="0.11117 -0.020797 0.99358" />
+        <limit lower="-1.57" upper="0" effort="0.17658" velocity="8.727" />
+        <mimic joint="arm1_J611" multiplier="1.0" />
+    </joint>
+    <link name="arm1_J622_Link">
+        <inertial>
+            <origin xyz="0.0220596381156197 0.010136886830762 -0.00653363451658528" rpy="0 0 0" />
+            <mass value="0.00455759594340132" />
+            <inertia ixx="2.23294722729519E-07" ixy="-4.06468306448511E-07" ixz="1.23439020437423E-07" iyy="1.24703239279067E-06" iyz="4.22278142507765E-08" izz="1.38958858299095E-06" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J622_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.619607843137255 0.407843137254902 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J622_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm1_J622" type="fixed">
+        <origin xyz="0.030327 -0.0037144 -0.0034711" rpy="0 0 0" />
+        <parent link="arm1_J621_Link" />
+        <child link="arm1_J622_Link" />
+        <axis xyz="-0.11117 0.020797 -0.99358" />
+        <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727" />
+    </joint>
+    <!-- 分支4: J623 -->
+    <link name="arm1_J623_Link">
+        <inertial>
+            <origin xyz="0.015019555013123 -0.00195871958548034 -0.00398608640062331" rpy="0 0 0" />
+            <mass value="0.00159752482636938" />
+            <inertia ixx="1.31594195455566E-08" ixy="2.53049428170635E-08" ixz="2.24255621195714E-08" iyy="2.02520360267451E-07" iyz="-2.96385733924891E-09" izz="2.06277189029057E-07" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J623_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.619607843137255 0.407843137254902 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J623_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm1_J623" type="fixed">
+        <origin xyz="0.057315 -0.001013 -0.015492" rpy="0 0 0" />
+        <parent link="arm1_J5_Link" />
+        <child link="arm1_J623_Link" />
+        <axis xyz="-0.11117 0.020797 -0.99358" />
+        <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727" />
+    </joint>
+    <!-- ========== 臂2 ========== -->
+    <link name="arm2_base_Link">
+        <inertial>
+            <origin xyz="-0.0023876 9.2688E-09 0.024324" rpy="0 0 0" />
+            <mass value="0.13036" />
+            <inertia ixx="0.00013453" ixy="1.9558E-11" ixz="3.785E-06" iyy="0.00014759" iyz="1.2238E-11" izz="0.00021469" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/base_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.039216 0.4902 0.7098 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/base_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="arm2_J1_Link">
+        <inertial>
+            <origin xyz="0.003336 -0.012811 0.024569" rpy="0 0 0" />
+            <mass value="0.10198" />
+            <inertia ixx="5.5023E-05" ixy="-2.0638E-06" ixz="-8.0449E-06" iyy="6.6565E-05" iyz="4.7085E-06" izz="6.2929E-05" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J1_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.91765 0.57647 0 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J1_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm2_J1" type="revolute">
+        <origin xyz="0 0 0.0574" rpy="0 0 0" />
+        <parent link="arm2_base_Link" />
+        <child link="arm2_J1_Link" />
+        <axis xyz="0 0 -1" />
+        <limit lower="0" upper="6.28" effort="0.17658" velocity="8.727" />
+    </joint>
+    <link name="arm2_J2_Link">
+        <inertial>
+            <origin xyz="0.019388 0.0099663 0.052687" rpy="0 0 0" />
+            <mass value="0.06179" />
+            <inertia ixx="8.3164E-05" ixy="-1.8885E-06" ixz="-2.8377E-06" iyy="9.8666E-05" iyz="-3.468E-06" izz="2.0179E-05" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J2_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="1 0.60392 0.10588 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J2_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm2_J2" type="revolute">
+        <origin xyz="0.013658 0.0029828 0.04428" rpy="0 0 0" />
+        <parent link="arm2_J1_Link" />
+        <child link="arm2_J2_Link" />
+        <axis xyz="0.11445 -0.99343 0" />
+        <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727" />
+    </joint>
+    <link name="arm2_J3_Link">
+        <inertial>
+            <origin xyz="0.035646650262344 -0.012699604479704 0.0152846291106878" rpy="0 0 0" />
+            <mass value="0.0981786540068258" />
+            <inertia ixx="2.71238804817978E-05" ixy="-5.71981715265826E-06" ixz="-2.16896367669207E-05" iyy="7.51486478431641E-05" iyz="-2.40806541353186E-06" izz="6.58547599456685E-05" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J3_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.556862745098039 0.556862745098039 0.556862745098039 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J3_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm2_J3" type="revolute">
+        <origin xyz="0.041066 0.004731 0.10676" rpy="0 0 0" />
+        <parent link="arm2_J2_Link" />
+        <child link="arm2_J3_Link" />
+        <axis xyz="0.11445 -0.99343 0" />
+        <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727" />
+    </joint>
+    <link name="arm2_J4_Link">
+        <inertial>
+            <origin xyz="0.0205195365012738 0.0057055734028682 0.00399883468123602" rpy="0 0 0" />
+            <mass value="0.0233897773496103" />
+            <inertia ixx="3.43349236920125E-06" ixy="-8.02083953722184E-07" ixz="-5.77025276397552E-07" iyy="5.19293045487525E-06" iyz="-2.97635751030501E-07" izz="4.27087968264851E-06" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J4_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="1 0.450980392156863 0.0588235294117647 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J4_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm2_J4" type="revolute">
+        <origin xyz="0.088378 -0.0013945 0.044841" rpy="0 0 0" />
+        <parent link="arm2_J3_Link" />
+        <child link="arm2_J4_Link" />
+        <axis xyz="0.90747 0.10454 0.40691" />
+        <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727" />
+    </joint>
+    <link name="arm2_J5_Link">
+        <inertial>
+            <origin xyz="0.030139853478118 -0.00669231765085604 -0.007541437593377" rpy="0 0 0" />
+            <mass value="0.0235598626610195" />
+            <inertia ixx="4.60633454583569E-06" ixy="1.4917505219439E-06" ixz="1.98885287477792E-06" iyy="8.07052867929375E-06" iyz="-4.17767881313178E-07" izz="9.67816355956121E-06" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J5_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.870588235294118 0.396078431372549 0 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J5_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm2_J5" type="revolute">
+        <origin xyz="0.026727 0.018714 0.0079612" rpy="0 0 0" />
+        <parent link="arm2_J4_Link" />
+        <child link="arm2_J5_Link" />
+        <axis xyz="-0.12998 0.99089 0.035284" />
+        <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727" />
+    </joint>
+    <link name="arm2_J611_Link">
+        <inertial>
+            <origin xyz="0.00472114066643811 0.00221776750323123 -0.00249475011588823" rpy="0 0 0" />
+            <mass value="0.00266149879973348" />
+            <inertia ixx="1.69500093721504E-07" ixy="-1.25012959750321E-07" ixz="2.93929282152535E-08" iyy="2.96240805822121E-07" iyz="1.06527511124186E-08" izz="4.52511893148706E-07" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J611_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.619607843137255 0.407843137254902 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J611_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm2_J611" type="revolute">
+        <origin xyz="0.03527 0.014162 -0.012708" rpy="0 0 0" />
+        <parent link="arm2_J5_Link" />
+        <child link="arm2_J611_Link" />
+        <axis xyz="-0.11117 0.020797 -0.99358" />
+        <limit lower="-1.57" upper="0" effort="0.17658" velocity="8.727" />
+    </joint>
+    <link name="arm2_J612_Link">
+        <inertial>
+            <origin xyz="0.0239496852961916 -0.0030312861155509 -0.00702061040058699" rpy="0 0 0" />
+            <mass value="0.00455754616377674" />
+            <inertia ixx="8.77627367069562E-08" ixy="5.5640422020742E-08" ixz="1.48272573930595E-07" iyy="1.38635258742475E-06" iyz="-6.56377203199651E-09" izz="1.3857779119478E-06" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J612_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.619607843137255 0.407843137254902 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J612_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm2_J612" type="fixed">
+        <origin xyz="0.026581 0.01523 -0.0026554" rpy="0 0 0" />
+        <parent link="arm2_J611_Link" />
+        <child link="arm2_J612_Link" />
+        <axis xyz="-0.11117 0.020797 -0.99358" />
+        <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727" />
+    </joint>
+    <!-- 分支2: J613 -->
+    <link name="arm2_J613_Link">
+        <inertial>
+            <origin xyz="0.0130243205091145 0.00758872594558846 -0.00557591371872085" rpy="0 0 0" />
+            <mass value="0.00159752482636938" />
+            <inertia ixx="5.53132600865754E-08" ixy="-8.36790688449769E-08" ixz="1.54277494001416E-08" iyy="1.59347197686967E-07" iyz="8.32683952100482E-09" izz="2.07296511068524E-07" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J613_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.619607843137255 0.407843137254902 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J613_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm2_J613" type="fixed">
+        <origin xyz="0.056015 0.0088959 -0.015139" rpy="0 0 0" />
+        <parent link="arm2_J5_Link" />
+        <child link="arm2_J613_Link" />
+        <axis xyz="-0.11117 0.020797 -0.99358" />
+        <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727" />
+    </joint>
+    <!-- 分支3: J621/622 -->
+    <link name="arm2_J621_Link">
+        <inertial>
+            <origin xyz="0.00532747765601094 -4.59568970913177E-05 -0.00260997638883309" rpy="0 0 0" />
+            <mass value="0.00258512668232471" />
+            <inertia ixx="1.00793684417537E-07" ixy="4.10445722253845E-08" ixz="4.01804406093267E-08" iyy="3.62949122954144E-07" iyz="-6.46103526520651E-09" izz="4.47586978691517E-07" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J621_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.619607843137255 0.407843137254902 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J621_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm2_J621" type="revolute">
+        <origin xyz="0.038792 -0.012691 -0.013664" rpy="0 0 0" />
+        <parent link="arm2_J5_Link" />
+        <child link="arm2_J621_Link" />
+        <axis xyz="0.11117 -0.020797 0.99358" />
+        <limit lower="-1.57" upper="0" effort="0.17658" velocity="8.727" />
+        <mimic joint="arm2_J611" multiplier="1.0" />
+    </joint>
+    <link name="arm2_J622_Link">
+        <inertial>
+            <origin xyz="0.0220596381156197 0.010136886830762 -0.00653363451658528" rpy="0 0 0" />
+            <mass value="0.00455759594340132" />
+            <inertia ixx="2.23294722729519E-07" ixy="-4.06468306448511E-07" ixz="1.23439020437423E-07" iyy="1.24703239279067E-06" iyz="4.22278142507765E-08" izz="1.38958858299095E-06" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J622_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.619607843137255 0.407843137254902 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J622_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm2_J622" type="fixed">
+        <origin xyz="0.030327 -0.0037144 -0.0034711" rpy="0 0 0" />
+        <parent link="arm2_J621_Link" />
+        <child link="arm2_J622_Link" />
+        <axis xyz="-0.11117 0.020797 -0.99358" />
+        <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727" />
+    </joint>
+    <!-- 分支4: J623 -->
+    <link name="arm2_J623_Link">
+        <inertial>
+            <origin xyz="0.015019555013123 -0.00195871958548034 -0.00398608640062331" rpy="0 0 0" />
+            <mass value="0.00159752482636938" />
+            <inertia ixx="1.31594195455566E-08" ixy="2.53049428170635E-08" ixz="2.24255621195714E-08" iyy="2.02520360267451E-07" iyz="-2.96385733924891E-09" izz="2.06277189029057E-07" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J623_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.619607843137255 0.407843137254902 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J623_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm2_J623" type="fixed">
+        <origin xyz="0.057315 -0.001013 -0.015492" rpy="0 0 0" />
+        <parent link="arm2_J5_Link" />
+        <child link="arm2_J623_Link" />
+        <axis xyz="-0.11117 0.020797 -0.99358" />
+        <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727" />
+    </joint>
+    <!-- ========== 臂3 ========== -->
+    <link name="arm3_base_Link">
+        <inertial>
+            <origin xyz="-0.0023876 9.2688E-09 0.024324" rpy="0 0 0" />
+            <mass value="0.13036" />
+            <inertia ixx="0.00013453" ixy="1.9558E-11" ixz="3.785E-06" iyy="0.00014759" iyz="1.2238E-11" izz="0.00021469" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/base_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.039216 0.4902 0.7098 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/base_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="arm3_J1_Link">
+        <inertial>
+            <origin xyz="0.003336 -0.012811 0.024569" rpy="0 0 0" />
+            <mass value="0.10198" />
+            <inertia ixx="5.5023E-05" ixy="-2.0638E-06" ixz="-8.0449E-06" iyy="6.6565E-05" iyz="4.7085E-06" izz="6.2929E-05" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J1_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.91765 0.57647 0 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J1_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm3_J1" type="revolute">
+        <origin xyz="0 0 0.0574" rpy="0 0 0" />
+        <parent link="arm3_base_Link" />
+        <child link="arm3_J1_Link" />
+        <axis xyz="0 0 -1" />
+        <limit lower="0" upper="6.28" effort="0.17658" velocity="8.727" />
+    </joint>
+    <link name="arm3_J2_Link">
+        <inertial>
+            <origin xyz="0.019388 0.0099663 0.052687" rpy="0 0 0" />
+            <mass value="0.06179" />
+            <inertia ixx="8.3164E-05" ixy="-1.8885E-06" ixz="-2.8377E-06" iyy="9.8666E-05" iyz="-3.468E-06" izz="2.0179E-05" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J2_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="1 0.60392 0.10588 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J2_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm3_J2" type="revolute">
+        <origin xyz="0.013658 0.0029828 0.04428" rpy="0 0 0" />
+        <parent link="arm3_J1_Link" />
+        <child link="arm3_J2_Link" />
+        <axis xyz="0.11445 -0.99343 0" />
+        <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727" />
+    </joint>
+    <link name="arm3_J3_Link">
+        <inertial>
+            <origin xyz="0.035646650262344 -0.012699604479704 0.0152846291106878" rpy="0 0 0" />
+            <mass value="0.0981786540068258" />
+            <inertia ixx="2.71238804817978E-05" ixy="-5.71981715265826E-06" ixz="-2.16896367669207E-05" iyy="7.51486478431641E-05" iyz="-2.40806541353186E-06" izz="6.58547599456685E-05" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J3_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.556862745098039 0.556862745098039 0.556862745098039 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J3_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm3_J3" type="revolute">
+        <origin xyz="0.041066 0.004731 0.10676" rpy="0 0 0" />
+        <parent link="arm3_J2_Link" />
+        <child link="arm3_J3_Link" />
+        <axis xyz="0.11445 -0.99343 0" />
+        <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727" />
+    </joint>
+    <link name="arm3_J4_Link">
+        <inertial>
+            <origin xyz="0.0205195365012738 0.0057055734028682 0.00399883468123602" rpy="0 0 0" />
+            <mass value="0.0233897773496103" />
+            <inertia ixx="3.43349236920125E-06" ixy="-8.02083953722184E-07" ixz="-5.77025276397552E-07" iyy="5.19293045487525E-06" iyz="-2.97635751030501E-07" izz="4.27087968264851E-06" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J4_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="1 0.450980392156863 0.0588235294117647 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J4_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm3_J4" type="revolute">
+        <origin xyz="0.088378 -0.0013945 0.044841" rpy="0 0 0" />
+        <parent link="arm3_J3_Link" />
+        <child link="arm3_J4_Link" />
+        <axis xyz="0.90747 0.10454 0.40691" />
+        <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727" />
+    </joint>
+    <link name="arm3_J5_Link">
+        <inertial>
+            <origin xyz="0.030139853478118 -0.00669231765085604 -0.007541437593377" rpy="0 0 0" />
+            <mass value="0.0235598626610195" />
+            <inertia ixx="4.60633454583569E-06" ixy="1.4917505219439E-06" ixz="1.98885287477792E-06" iyy="8.07052867929375E-06" iyz="-4.17767881313178E-07" izz="9.67816355956121E-06" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J5_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.870588235294118 0.396078431372549 0 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J5_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm3_J5" type="revolute">
+        <origin xyz="0.026727 0.018714 0.0079612" rpy="0 0 0" />
+        <parent link="arm3_J4_Link" />
+        <child link="arm3_J5_Link" />
+        <axis xyz="-0.12998 0.99089 0.035284" />
+        <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727" />
+    </joint>
+    <link name="arm3_J611_Link">
+        <inertial>
+            <origin xyz="0.00472114066643811 0.00221776750323123 -0.00249475011588823" rpy="0 0 0" />
+            <mass value="0.00266149879973348" />
+            <inertia ixx="1.69500093721504E-07" ixy="-1.25012959750321E-07" ixz="2.93929282152535E-08" iyy="2.96240805822121E-07" iyz="1.06527511124186E-08" izz="4.52511893148706E-07" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J611_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.619607843137255 0.407843137254902 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J611_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm3_J611" type="revolute">
+        <origin xyz="0.03527 0.014162 -0.012708" rpy="0 0 0" />
+        <parent link="arm3_J5_Link" />
+        <child link="arm3_J611_Link" />
+        <axis xyz="-0.11117 0.020797 -0.99358" />
+        <limit lower="-1.57" upper="0" effort="0.17658" velocity="8.727" />
+    </joint>
+    <link name="arm3_J612_Link">
+        <inertial>
+            <origin xyz="0.0239496852961916 -0.0030312861155509 -0.00702061040058699" rpy="0 0 0" />
+            <mass value="0.00455754616377674" />
+            <inertia ixx="8.77627367069562E-08" ixy="5.5640422020742E-08" ixz="1.48272573930595E-07" iyy="1.38635258742475E-06" iyz="-6.56377203199651E-09" izz="1.3857779119478E-06" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J612_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.619607843137255 0.407843137254902 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J612_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm3_J612" type="fixed">
+        <origin xyz="0.026581 0.01523 -0.0026554" rpy="0 0 0" />
+        <parent link="arm3_J611_Link" />
+        <child link="arm3_J612_Link" />
+        <axis xyz="-0.11117 0.020797 -0.99358" />
+        <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727" />
+    </joint>
+    <!-- 分支2: J613 -->
+    <link name="arm3_J613_Link">
+        <inertial>
+            <origin xyz="0.0130243205091145 0.00758872594558846 -0.00557591371872085" rpy="0 0 0" />
+            <mass value="0.00159752482636938" />
+            <inertia ixx="5.53132600865754E-08" ixy="-8.36790688449769E-08" ixz="1.54277494001416E-08" iyy="1.59347197686967E-07" iyz="8.32683952100482E-09" izz="2.07296511068524E-07" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J613_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.619607843137255 0.407843137254902 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J613_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm3_J613" type="fixed">
+        <origin xyz="0.056015 0.0088959 -0.015139" rpy="0 0 0" />
+        <parent link="arm3_J5_Link" />
+        <child link="arm3_J613_Link" />
+        <axis xyz="-0.11117 0.020797 -0.99358" />
+        <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727" />
+    </joint>
+    <!-- 分支3: J621/622 -->
+    <link name="arm3_J621_Link">
+        <inertial>
+            <origin xyz="0.00532747765601094 -4.59568970913177E-05 -0.00260997638883309" rpy="0 0 0" />
+            <mass value="0.00258512668232471" />
+            <inertia ixx="1.00793684417537E-07" ixy="4.10445722253845E-08" ixz="4.01804406093267E-08" iyy="3.62949122954144E-07" iyz="-6.46103526520651E-09" izz="4.47586978691517E-07" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J621_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.619607843137255 0.407843137254902 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J621_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm3_J621" type="revolute">
+        <origin xyz="0.038792 -0.012691 -0.013664" rpy="0 0 0" />
+        <parent link="arm3_J5_Link" />
+        <child link="arm3_J621_Link" />
+        <axis xyz="0.11117 -0.020797 0.99358" />
+        <limit lower="-1.57" upper="0" effort="0.17658" velocity="8.727" />
+        <mimic joint="arm3_J611" multiplier="1.0" />
+    </joint>
+    <link name="arm3_J622_Link">
+        <inertial>
+            <origin xyz="0.0220596381156197 0.010136886830762 -0.00653363451658528" rpy="0 0 0" />
+            <mass value="0.00455759594340132" />
+            <inertia ixx="2.23294722729519E-07" ixy="-4.06468306448511E-07" ixz="1.23439020437423E-07" iyy="1.24703239279067E-06" iyz="4.22278142507765E-08" izz="1.38958858299095E-06" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J622_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.619607843137255 0.407843137254902 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J622_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm3_J622" type="fixed">
+        <origin xyz="0.030327 -0.0037144 -0.0034711" rpy="0 0 0" />
+        <parent link="arm3_J621_Link" />
+        <child link="arm3_J622_Link" />
+        <axis xyz="-0.11117 0.020797 -0.99358" />
+        <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727" />
+    </joint>
+    <!-- 分支4: J623 -->
+    <link name="arm3_J623_Link">
+        <inertial>
+            <origin xyz="0.015019555013123 -0.00195871958548034 -0.00398608640062331" rpy="0 0 0" />
+            <mass value="0.00159752482636938" />
+            <inertia ixx="1.31594195455566E-08" ixy="2.53049428170635E-08" ixz="2.24255621195714E-08" iyy="2.02520360267451E-07" iyz="-2.96385733924891E-09" izz="2.06277189029057E-07" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J623_Link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.619607843137255 0.407843137254902 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://my_arm_description/meshes/J623_Link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="arm3_J623" type="fixed">
+        <origin xyz="0.057315 -0.001013 -0.015492" rpy="0 0 0" />
+        <parent link="arm3_J5_Link" />
+        <child link="arm3_J623_Link" />
+        <axis xyz="-0.11117 0.020797 -0.99358" />
+        <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727" />
+    </joint>
+    <!-- ========== 固定关节：将三个臂的基座固定到 world 上的指定位置（等边三角形，半径0.15米）========== -->
+    <joint name="world_to_arm1" type="fixed">
+        <parent link="world" />
+        <child link="arm1_base_Link" />
+        <origin xyz="0.3 0 0" rpy="0 0 0" />
+    </joint>
+    <joint name="world_to_arm2" type="fixed">
+        <parent link="world" />
+        <child link="arm2_base_Link" />
+        <origin xyz="-0.15 0.2598076 0" rpy="0 0 0" />
+    </joint>
+    <joint name="world_to_arm3" type="fixed">
+        <parent link="world" />
+        <child link="arm3_base_Link" />
+        <origin xyz="-0.15 -0.2598076 0" rpy="0 0 0" />
+    </joint>
+    <!-- 可选摄像头 -->
+    <link name="camera_link">
+        <visual>
+            <geometry>
+                <box size="0.02 0.02 0.02" />
+            </geometry>
+            <material name="blue" />
+        </visual>
+    </link>
+    <joint name="world_to_camera" type="fixed">
+        <parent link="world" />
+        <child link="camera_link" />
+        <origin xyz="0 0 0.3" rpy="-1.57 0 0" />
+    </joint>
+    <transmission name="trans_arm1_J1">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm1_J1">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm1_J1_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm1_J2">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm1_J2">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm1_J2_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm1_J3">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm1_J3">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm1_J3_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm1_J4">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm1_J4">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm1_J4_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm1_J5">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm1_J5">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm1_J5_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm1_J611">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm1_J611">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm1_J611_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm1_J621">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm1_J621">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm1_J621_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm2_J1">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm2_J1">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm2_J1_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm2_J2">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm2_J2">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm2_J2_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm2_J3">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm2_J3">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm2_J3_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm2_J4">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm2_J4">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm2_J4_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm2_J5">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm2_J5">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm2_J5_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm2_J611">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm2_J611">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm2_J611_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm2_J621">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm2_J621">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm2_J621_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm3_J1">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm3_J1">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm3_J1_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm3_J2">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm3_J2">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm3_J2_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm3_J3">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm3_J3">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm3_J3_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm3_J4">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm3_J4">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm3_J4_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm3_J5">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm3_J5">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm3_J5_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm3_J611">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm3_J611">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm3_J611_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_arm3_J621">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="arm3_J621">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="arm3_J621_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/</robotNamespace>
+        </plugin>
+    </gazebo>
+</robot>
+

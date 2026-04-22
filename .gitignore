@@ -1,0 +1,12 @@
+catkin_ws/build/
+catkin_ws/devel/
+catkin_ws/install/
+catkin_ws/.catkin_workspace
+catkin_ws/.vscode/
+catkin_ws/src/.vscode/
+.tmp/
+*.log
+*.deb
+*.pyc
+__pycache__/
+.DS_Store

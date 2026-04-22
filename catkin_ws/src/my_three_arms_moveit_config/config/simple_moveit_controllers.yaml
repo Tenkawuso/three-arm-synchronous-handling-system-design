@@ -1,0 +1,34 @@
+controller_list:
+  - name: arm1_group_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: True
+    joints:
+      - arm1_J1
+      - arm1_J2
+      - arm1_J3
+      - arm1_J4
+      - arm1_J5
+      - arm1_J621
+  - name: arm2_group_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: True
+    joints:
+      - arm2_J1
+      - arm2_J2
+      - arm2_J3
+      - arm2_J4
+      - arm2_J5
+      - arm2_J621
+  - name: arm3_group_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: True
+    joints:
+      - arm3_J1
+      - arm3_J2
+      - arm3_J3
+      - arm3_J4
+      - arm3_J5
+      - arm3_J621

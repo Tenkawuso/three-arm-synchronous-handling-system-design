@@ -1,0 +1,308 @@
+<?xml version="1.0"?>
+<robot name="three_4dof_arms">
+<!-- 虚拟世界链接，作为唯一根链接 -->
+<link name="world"/>
+
+<joint name="world_to_arm1" type="fixed">
+  <parent link="world"/>
+  <child link="arm1_base_link"/>
+  <origin xyz="0.15 0 0" rpy="0 0 0"/>
+</joint>
+
+<joint name="world_to_arm2" type="fixed">
+  <parent link="world"/>
+  <child link="arm2_base_link"/>
+  <origin xyz="-0.075 0.1299038 0" rpy="0 0 0"/>
+</joint>
+
+<joint name="world_to_arm3" type="fixed">
+  <parent link="world"/>
+  <child link="arm3_base_link"/>
+  <origin xyz="-0.075 -0.1299038 0" rpy="0 0 0"/>
+</joint>
+
+<!-- 摄像头连杆 -->
+<link name="camera_link">
+  <visual>
+    <geometry><box size="0.02 0.02 0.02"/></geometry>
+    <material name="blue"/>
+  </visual>
+</link>
+
+<!-- 将摄像头固定到 world 正上方 0.3m 处 -->
+<joint name="world_to_camera" type="fixed">
+  <parent link="world"/>
+  <child link="camera_link"/>
+  <origin xyz="0 0 0.3" rpy="-1.57 0 0"/>  <!-- 绕X转-90度使镜头朝下 -->
+
+</joint>
+  <!-- 颜色定义（共用） -->
+  <material name="blue">
+    <color rgba="0.2 0.5 1.0 1.0"/>
+  </material>
+  <material name="silver">
+    <color rgba="0.75 0.75 0.75 1.0"/>
+  </material>
+
+  <!-- ========== 臂 1 ========== -->
+  <link name="arm1_base_link">
+    <visual>
+      <geometry><cylinder radius="0.03" length="0.02"/></geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <geometry><cylinder radius="0.03" length="0.02"/></geometry>
+    </collision>
+  </link>
+
+  <joint name="arm1_joint1" type="revolute">
+    <parent link="arm1_base_link"/>
+    <child link="arm1_link1"/>
+    <origin xyz="0 0 0.02" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14" upper="3.14" effort="0.5" velocity="1.0"/>
+  </joint>
+
+  <link name="arm1_link1">
+    <visual>
+      <geometry><cylinder radius="0.02" length="0.06"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.03"/>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry><cylinder radius="0.02" length="0.06"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.03"/>
+    </collision>
+  </link>
+
+  <joint name="arm1_joint2" type="revolute">
+    <parent link="arm1_link1"/>
+    <child link="arm1_link2"/>
+    <origin xyz="0 0 0.09" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="0.5" velocity="1.0"/>
+  </joint>
+
+  <link name="arm1_link2">
+    <visual>
+      <geometry><cylinder radius="0.015" length="0.12"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.06"/>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <geometry><cylinder radius="0.015" length="0.12"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.06"/>
+    </collision>
+  </link>
+
+  <joint name="arm1_joint3" type="revolute">
+    <parent link="arm1_link2"/>
+    <child link="arm1_link3"/>
+    <origin xyz="0 0 0.12" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="0.5" velocity="1.0"/>
+  </joint>
+
+  <link name="arm1_link3">
+    <visual>
+      <geometry><cylinder radius="0.012" length="0.10"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.05"/>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry><cylinder radius="0.012" length="0.10"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.05"/>
+    </collision>
+  </link>
+
+  <joint name="arm1_joint4" type="fixed">
+    <parent link="arm1_link3"/>
+    <child link="arm1_link4"/>
+    <origin xyz="0 0 0.10" rpy="0 0 0"/>
+  </joint>
+
+  <link name="arm1_link4">
+    <visual>
+      <geometry><box size="0.02 0.04 0.02"/></geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <geometry><box size="0.02 0.04 0.02"/></geometry>
+    </collision>
+  </link>
+
+  <!-- ========== 臂 2 ========== -->
+  <link name="arm2_base_link">
+    <visual>
+      <geometry><cylinder radius="0.03" length="0.02"/></geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <geometry><cylinder radius="0.03" length="0.02"/></geometry>
+    </collision>
+  </link>
+
+  <joint name="arm2_joint1" type="revolute">
+    <parent link="arm2_base_link"/>
+    <child link="arm2_link1"/>
+    <origin xyz="0 0 0.02" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14" upper="3.14" effort="0.5" velocity="1.0"/>
+  </joint>
+
+  <link name="arm2_link1">
+    <visual>
+      <geometry><cylinder radius="0.02" length="0.06"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.03"/>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry><cylinder radius="0.02" length="0.06"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.03"/>
+    </collision>
+  </link>
+
+  <joint name="arm2_joint2" type="revolute">
+    <parent link="arm2_link1"/>
+    <child link="arm2_link2"/>
+    <origin xyz="0 0 0.09" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="0.5" velocity="1.0"/>
+  </joint>
+
+  <link name="arm2_link2">
+    <visual>
+      <geometry><cylinder radius="0.015" length="0.12"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.06"/>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <geometry><cylinder radius="0.015" length="0.12"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.06"/>
+    </collision>
+  </link>
+
+  <joint name="arm2_joint3" type="revolute">
+    <parent link="arm2_link2"/>
+    <child link="arm2_link3"/>
+    <origin xyz="0 0 0.12" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="0.5" velocity="1.0"/>
+  </joint>
+
+  <link name="arm2_link3">
+    <visual>
+      <geometry><cylinder radius="0.012" length="0.10"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.05"/>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry><cylinder radius="0.012" length="0.10"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.05"/>
+    </collision>
+  </link>
+
+  <joint name="arm2_joint4" type="fixed">
+    <parent link="arm2_link3"/>
+    <child link="arm2_link4"/>
+    <origin xyz="0 0 0.10" rpy="0 0 0"/>
+  </joint>
+
+  <link name="arm2_link4">
+    <visual>
+      <geometry><box size="0.02 0.04 0.02"/></geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <geometry><box size="0.02 0.04 0.02"/></geometry>
+    </collision>
+  </link>
+
+  <!-- ========== 臂 3 ========== -->
+  <link name="arm3_base_link">
+    <visual>
+      <geometry><cylinder radius="0.03" length="0.02"/></geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <geometry><cylinder radius="0.03" length="0.02"/></geometry>
+    </collision>
+  </link>
+
+  <joint name="arm3_joint1" type="revolute">
+    <parent link="arm3_base_link"/>
+    <child link="arm3_link1"/>
+    <origin xyz="0 0 0.02" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14" upper="3.14" effort="0.5" velocity="1.0"/>
+  </joint>
+
+  <link name="arm3_link1">
+    <visual>
+      <geometry><cylinder radius="0.02" length="0.06"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.03"/>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry><cylinder radius="0.02" length="0.06"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.03"/>
+    </collision>
+  </link>
+
+  <joint name="arm3_joint2" type="revolute">
+    <parent link="arm3_link1"/>
+    <child link="arm3_link2"/>
+    <origin xyz="0 0 0.09" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="0.5" velocity="1.0"/>
+  </joint>
+
+  <link name="arm3_link2">
+    <visual>
+      <geometry><cylinder radius="0.015" length="0.12"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.06"/>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <geometry><cylinder radius="0.015" length="0.12"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.06"/>
+    </collision>
+  </link>
+
+  <joint name="arm3_joint3" type="revolute">
+    <parent link="arm3_link2"/>
+    <child link="arm3_link3"/>
+    <origin xyz="0 0 0.12" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="0.5" velocity="1.0"/>
+  </joint>
+
+  <link name="arm3_link3">
+    <visual>
+      <geometry><cylinder radius="0.012" length="0.10"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.05"/>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry><cylinder radius="0.012" length="0.10"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.05"/>
+    </collision>
+  </link>
+
+  <joint name="arm3_joint4" type="fixed">
+    <parent link="arm3_link3"/>
+    <child link="arm3_link4"/>
+    <origin xyz="0 0 0.10" rpy="0 0 0"/>
+  </joint>
+
+  <link name="arm3_link4">
+    <visual>
+      <geometry><box size="0.02 0.04 0.02"/></geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <geometry><box size="0.02 0.04 0.02"/></geometry>
+    </collision>
+  </link>
+
+</robot>

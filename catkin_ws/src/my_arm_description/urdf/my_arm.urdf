@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<robot name="my_4dof_arm">
+
+  <material name="blue">
+    <color rgba="0.2 0.5 1.0 1.0"/>
+  </material>
+  <material name="silver">
+    <color rgba="0.75 0.75 0.75 1.0"/>
+  </material>
+
+  <!-- 基座 -->
+  <link name="base_link">
+    <visual>
+      <geometry><cylinder radius="0.03" length="0.02"/></geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <geometry><cylinder radius="0.03" length="0.02"/></geometry>
+    </collision>
+  </link>
+
+  <!-- 关节1 -->
+  <joint name="joint1" type="revolute">
+    <parent link="base_link"/>
+    <child link="link1"/>
+    <origin xyz="0 0 0.02" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14" upper="3.14" effort="0.5" velocity="1.0"/>
+  </joint>
+
+  <link name="link1">
+    <visual>
+      <geometry><cylinder radius="0.02" length="0.06"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.03"/>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry><cylinder radius="0.02" length="0.06"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.03"/>
+    </collision>
+  </link>
+
+  <!-- 关节2 -->
+  <joint name="joint2" type="revolute">
+    <parent link="link1"/>
+    <child link="link2"/>
+    <origin xyz="0 0 0.09" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="0.5" velocity="1.0"/>
+  </joint>
+
+  <link name="link2">
+    <visual>
+      <geometry><cylinder radius="0.015" length="0.12"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.06"/>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <geometry><cylinder radius="0.015" length="0.12"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.06"/>
+    </collision>
+  </link>
+
+  <!-- 关节3 -->
+  <joint name="joint3" type="revolute">
+    <parent link="link2"/>
+    <child link="link3"/>
+    <origin xyz="0 0 0.12" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="0.5" velocity="1.0"/>
+  </joint>
+
+  <link name="link3">
+    <visual>
+      <geometry><cylinder radius="0.012" length="0.10"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.05"/>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry><cylinder radius="0.012" length="0.10"/></geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.05"/>
+    </collision>
+  </link>
+
+  <!-- 关节4（固定） -->
+  <joint name="joint4" type="fixed">
+    <parent link="link3"/>
+    <child link="link4"/>
+    <origin xyz="0 0 0.10" rpy="0 0 0"/>
+  </joint>
+
+  <link name="link4">
+    <visual>
+      <geometry><box size="0.02 0.04 0.02"/></geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <geometry><box size="0.02 0.04 0.02"/></geometry>
+    </collision>
+  </link>
+
+</robot>

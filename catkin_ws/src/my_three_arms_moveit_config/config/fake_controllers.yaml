@@ -1,0 +1,66 @@
+controller_list:
+  - name: fake_arm1_group_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - arm1_J1
+      - arm1_J2
+      - arm1_J3
+      - arm1_J4
+      - arm1_J5
+  - name: fake_arm2_group_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - arm2_J1
+      - arm2_J2
+      - arm2_J3
+      - arm2_J4
+      - arm2_J5
+  - name: fake_arm3_group_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - arm3_J1
+      - arm3_J2
+      - arm3_J3
+      - arm3_J4
+      - arm3_J5
+  - name: fake_three_arms_group_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - arm1_J1
+      - arm1_J2
+      - arm1_J3
+      - arm1_J4
+      - arm1_J5
+      - arm2_J1
+      - arm2_J2
+      - arm2_J3
+      - arm2_J4
+      - arm2_J5
+      - arm3_J1
+      - arm3_J2
+      - arm3_J3
+      - arm3_J4
+      - arm3_J5
+  - name: fake_arm1_gripper_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - arm1_J611
+  - name: fake_arm2_gripper_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - arm2_J611
+  - name: fake_arm3_gripper_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - arm3_J611
+  - name: fake_all_grippers_group_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - arm1_J611
+      - arm2_J611
+      - arm3_J611
+initial:  # Define initial robot poses per group
+#  - group: arm1_group
+#    pose: home
+
+  []
