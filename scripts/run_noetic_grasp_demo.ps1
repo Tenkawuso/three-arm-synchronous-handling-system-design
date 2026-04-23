@@ -63,6 +63,12 @@ function Wait-ContainerRunning {
   }
 }
 
+function Invoke-ContainerBash {
+  param([string]$Command)
+
+  docker exec yjg-noetic bash -lc ($Command -replace "`r", "")
+}
+
 function Test-VcXsrvDisplayRunning {
   param([int]$DisplayNumber)
 
@@ -118,18 +124,8 @@ if ($LASTEXITCODE -ne 0) {
 Wait-ContainerRunning
 
 Write-Host 'Stopping previous simulation/demo processes...'
-$cleanupCmd = @"
-set +e
-if command -v pkill >/dev/null 2>&1; then
-  pkill -f '[r]oslaunch my_three_arms_moveit_config demo.launch' || true
-  pkill -f '[r]oslaunch my_three_arms_moveit_config demo_gazebo.launch' || true
-  pkill -f '[m]ove_group' || true
-  pkill -f '[r]viz' || true
-  pkill -f '[t]hree_arm_coordinator.py' || true
-fi
-exit 0
-"@
-docker exec yjg-noetic bash -lc $cleanupCmd *> $null
+$cleanupCmd = "if command -v pkill >/dev/null 2>&1; then pkill -f '[r]oslaunch my_three_arms_moveit_config demo.launch' || true; pkill -f '[r]oslaunch my_three_arms_moveit_config demo_gazebo.launch' || true; pkill -f '[m]ove_group' || true; pkill -f '[r]viz' || true; pkill -f '[t]hree_arm_coordinator.py' || true; fi"
+Invoke-ContainerBash -Command $cleanupCmd *> $null
 
 $containerPrefix = @"
 set -e
@@ -154,7 +150,7 @@ rosdep install --from-paths src --ignore-src -r -y || true
 catkin_make
 "@
 
-  docker exec yjg-noetic bash -lc $buildCmd
+  Invoke-ContainerBash -Command $buildCmd
   if ($LASTEXITCODE -ne 0) {
     throw 'Workspace build failed in container.'
   }
@@ -174,14 +170,14 @@ source /workspace/project/catkin_ws/devel/setup.bash
 nohup $launchCmd > /workspace/project/.tmp/grasp_demo.launch.log 2>&1 &
 echo `$! > /workspace/project/.tmp/grasp_demo.launch.pid
 "@
-docker exec yjg-noetic bash -lc $startLaunchCmd
+Invoke-ContainerBash -Command $startLaunchCmd
 if ($LASTEXITCODE -ne 0) {
   throw 'Failed to start simulation launch in background.'
 }
 
 $moveGroupReady = $false
 for ($i = 0; $i -lt 90; $i++) {
-  docker exec yjg-noetic bash -lc "pgrep -f '[m]ove_group' >/dev/null 2>&1"
+  Invoke-ContainerBash -Command "pgrep -f '[m]ove_group' >/dev/null 2>&1"
   if ($LASTEXITCODE -eq 0) {
     $moveGroupReady = $true
     break
@@ -200,7 +196,7 @@ source /workspace/project/catkin_ws/devel/setup.bash
 nohup env PYTHONUNBUFFERED=1 python3 -u /workspace/project/catkin_ws/src/three_arm_demo/scripts/three_arm_coordinator.py > /workspace/project/.tmp/grasp_demo.coord.log 2>&1 &
 echo `$! > /workspace/project/.tmp/grasp_demo.coord.pid
 "@
-docker exec yjg-noetic bash -lc $startCoordinatorCmd
+Invoke-ContainerBash -Command $startCoordinatorCmd
 if ($LASTEXITCODE -ne 0) {
   throw 'Failed to start three_arm_coordinator.py in background.'
 }
@@ -227,11 +223,13 @@ pair_targets = {
     '/target/Y': ('arm2', 'arm3'),
     '/target/G': ('arm1', 'arm3'),
 }
+center = (0.0, 0.0, 0.01)
+center_pull = 0.45
 targets = {
     topic: (
-        (arm_bases[a][0] + arm_bases[b][0]) / 2.0,
-        (arm_bases[a][1] + arm_bases[b][1]) / 2.0,
-        0.01,
+        center[0] + ((arm_bases[a][0] + arm_bases[b][0]) / 2.0 - center[0]) * center_pull,
+        center[1] + ((arm_bases[a][1] + arm_bases[b][1]) / 2.0 - center[1]) * center_pull,
+        center[2],
     )
     for topic, (a, b) in pair_targets.items()
 }
@@ -289,7 +287,7 @@ for _ in range(80):
 print('demo_targets_published')
 PY
 "@
-docker exec yjg-noetic bash -lc $publishTargetsCmd
+Invoke-ContainerBash -Command $publishTargetsCmd
 if ($LASTEXITCODE -ne 0) {
   throw 'Failed to publish demo targets.'
 }

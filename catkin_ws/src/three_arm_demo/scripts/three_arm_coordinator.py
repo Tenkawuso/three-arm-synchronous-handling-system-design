@@ -82,6 +82,10 @@ class ThreeArmURDFAvoidanceScheduler(object):
         # 避免多线程同时 execute 导致 MoveIt 打架
         # =====================================================
         self.exec_lock = threading.Lock()
+        self.grasp_condition = threading.Condition()
+        self.grasp_ready_count = 0
+        self.total_arms = 3
+        self.transport_phase_active = False
 
         # =====================================================
         # 参数设置
@@ -149,9 +153,9 @@ class ThreeArmURDFAvoidanceScheduler(object):
 
         # 末端抓取补偿
         self.grasp_z_offset = {
-            "arm1": 0.06,
-            "arm2": 0.06,
-            "arm3": 0.06,
+            "arm1": 0.04,
+            "arm2": 0.04,
+            "arm3": 0.04,
         }
 
         self.grasp_xy_offset = {
@@ -685,6 +689,10 @@ class ThreeArmURDFAvoidanceScheduler(object):
             for arm_id in ["arm1", "arm2", "arm3"]:
                 self.update_current_xyz(arm_id)
 
+            if not self.transport_phase_active:
+                rate.sleep()
+                continue
+
             pairs = [("arm1", "arm2"), ("arm1", "arm3"), ("arm2", "arm3")]
 
             for a, b in pairs:
@@ -771,6 +779,27 @@ class ThreeArmURDFAvoidanceScheduler(object):
 
         return ok
 
+    def wait_for_all_grasps(self, arm_id, timeout=30.0):
+        deadline = rospy.Time.now() + rospy.Duration(timeout)
+        with self.grasp_condition:
+            self.grasp_ready_count += 1
+            rospy.loginfo("[%s] 已完成抓取，等待其他机械臂... (%d/%d)",
+                          arm_id, self.grasp_ready_count, self.total_arms)
+            if self.grasp_ready_count >= self.total_arms:
+                self.transport_phase_active = True
+                self.grasp_condition.notify_all()
+                return True
+            while not rospy.is_shutdown() and self.grasp_ready_count < self.total_arms:
+                remaining = (deadline - rospy.Time.now()).to_sec()
+                if remaining <= 0:
+                    rospy.logwarn("[%s] 等待其他机械臂抓取超时，继续执行", arm_id)
+                    break
+                self.grasp_condition.wait(timeout=min(0.5, remaining))
+            if self.grasp_ready_count >= self.total_arms:
+                self.transport_phase_active = True
+            self.grasp_condition.notify_all()
+            return self.grasp_ready_count >= self.total_arms
+
     # =====================================================
     # 单臂任务流程
     # =====================================================
@@ -851,6 +880,8 @@ class ThreeArmURDFAvoidanceScheduler(object):
             with self.lock:
                 self.arm_state[arm_id]["status"] = "ERROR"
             return
+
+        self.wait_for_all_grasps(arm_id)
 
         # 4 抬升到运输层
         lift_xyz = [pick_xyz[0], pick_xyz[1], self.transport_layer]
@@ -978,10 +1009,16 @@ class ThreeArmURDFAvoidanceScheduler(object):
         monitor_thread.daemon = True
         monitor_thread.start()
 
-        # 先顺序执行，避免多臂同时进入危险区导致轨迹互撞。
+        task_threads = []
         for arm_id in ["arm1", "arm2", "arm3"]:
-            rospy.loginfo("[%s] 顺序启动任务", arm_id)
-            self.arm_task(arm_id)
+            rospy.loginfo("[%s] 并行启动任务", arm_id)
+            thread = threading.Thread(target=self.arm_task, args=(arm_id,))
+            thread.daemon = True
+            thread.start()
+            task_threads.append(thread)
+
+        for thread in task_threads:
+            thread.join()
 
         self.running = False
         rospy.loginfo("所有机械臂任务执行结束")
