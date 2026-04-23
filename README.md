@@ -49,6 +49,18 @@ OpenMV / 串口识别结果
 powershell -ExecutionPolicy Bypass -File .\scripts\run_noetic_smoke.ps1
 ```
 
+### Windows 图形化一键启动
+
+```powershell
+# MoveIt + RViz（默认）
+powershell -ExecutionPolicy Bypass -File .\scripts\run_noetic_gui.ps1
+
+# Gazebo + MoveIt
+powershell -ExecutionPolicy Bypass -File .\scripts\run_noetic_gui.ps1 -Mode gazebo
+```
+
+该脚本会自动完成：启动 VcXsrv、启动 Docker 容器、安装依赖、编译工作区并拉起图形化仿真。
+
 ## 原生 Ubuntu 运行
 
 下面步骤适用于 Ubuntu 20.04 + ROS Noetic。若是 Ubuntu 22.04，建议继续使用仓库里的 Docker 方案。
