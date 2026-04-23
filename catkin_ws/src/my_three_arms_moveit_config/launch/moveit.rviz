@@ -77,6 +77,24 @@ Visualization Manager:
         Robot Alpha: 0.5
         Show Scene Robot: true
       Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /target_marker/P
+      Name: Target Marker P
+      Queue Size: 100
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /target_marker/Y
+      Name: Target Marker Y
+      Queue Size: 100
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /target_marker/G
+      Name: Target Marker G
+      Queue Size: 100
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48

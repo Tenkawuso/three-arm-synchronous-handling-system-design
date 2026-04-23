@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-opencv \
     python3-numpy \
     ros-noetic-moveit \
+    ros-noetic-ros-controllers \
     ros-noetic-joint-state-publisher-gui \
     ros-noetic-tf \
     ros-noetic-cv-bridge \

@@ -59,8 +59,3 @@ controller_list:
       - arm1_J611
       - arm2_J611
       - arm3_J611
-initial:  # Define initial robot poses per group
-#  - group: arm1_group
-#    pose: home
-
-  []

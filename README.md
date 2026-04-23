@@ -61,6 +61,21 @@ powershell -ExecutionPolicy Bypass -File .\scripts\run_noetic_gui.ps1 -Mode gaze
 
 该脚本会自动完成：启动 VcXsrv、启动 Docker 容器、安装依赖、编译工作区并拉起图形化仿真。
 
+### Windows 一键演示抓取
+
+```powershell
+# MoveIt + RViz 抓取演示（默认）
+powershell -ExecutionPolicy Bypass -File .\scripts\run_noetic_grasp_demo.ps1
+
+# Gazebo + MoveIt 抓取演示
+powershell -ExecutionPolicy Bypass -File .\scripts\run_noetic_grasp_demo.ps1 -Mode gazebo
+
+# 已经编译过可跳过编译
+powershell -ExecutionPolicy Bypass -File .\scripts\run_noetic_grasp_demo.ps1 -SkipBuild
+```
+
+该脚本会自动完成：启动图形仿真、启动 `three_arm_coordinator.py`、并自动发布三组目标点触发三机械臂抓取与搬运流程。
+
 ## 原生 Ubuntu 运行
 
 下面步骤适用于 Ubuntu 20.04 + ROS Noetic。若是 Ubuntu 22.04，建议继续使用仓库里的 Docker 方案。

@@ -64,7 +64,7 @@
     <parent link="arm1_base_Link"/>
     <child link="arm1_J1_Link"/>
     <axis xyz="0 0 -1"/>
-    <limit lower="0" upper="6.28" effort="0.17658" velocity="8.727"/>
+    <limit lower="0" upper="6.28" effort="0.5" velocity="8.727"/>
   </joint>
 
   <link name="arm1_J2_Link">
@@ -95,7 +95,7 @@
     <parent link="arm1_J1_Link"/>
     <child link="arm1_J2_Link"/>
     <axis xyz="0.11445 -0.99343 0"/>
-    <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727"/>
+    <limit lower="-1.57" upper="1.57" effort="0.5" velocity="8.727"/>
   </joint>
 
   <link name="arm1_J3_Link">
@@ -126,7 +126,7 @@
     <parent link="arm1_J2_Link"/>
     <child link="arm1_J3_Link"/>
     <axis xyz="0.11445 -0.99343 0"/>
-    <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727"/>
+    <limit lower="-1.57" upper="1.57" effort="0.5" velocity="8.727"/>
   </joint>
 
   <link name="arm1_J4_Link">
@@ -157,7 +157,7 @@
     <parent link="arm1_J3_Link"/>
     <child link="arm1_J4_Link"/>
     <axis xyz="0.90747 0.10454 0.40691"/>
-    <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727"/>
+    <limit lower="-1.57" upper="1.57" effort="0.5" velocity="8.727"/>
   </joint>
 
   <link name="arm1_J5_Link">
@@ -195,7 +195,7 @@
     <parent link="arm1_J4_Link"/>
     <child link="arm1_J5_Link"/>
     <axis xyz="-0.12998 0.99089 0.035284"/>
-    <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727"/>
+    <limit lower="-1.57" upper="1.57" effort="0.5" velocity="8.727"/>
   </joint>
 
   <link name="arm1_J611_Link">
@@ -226,7 +226,7 @@
     <parent link="arm1_J5_Link"/>
     <child link="arm1_J611_Link"/>
     <axis xyz="-0.11117 0.020797 -0.99358"/>
-    <limit lower="-1.57" upper="0" effort="0.17658" velocity="8.727"/>
+    <limit lower="-1.57" upper="0" effort="0.5" velocity="8.727"/>
   </joint>
 
   <link name="arm1_J612_Link">
@@ -257,7 +257,7 @@
     <parent link="arm1_J611_Link"/>
     <child link="arm1_J612_Link"/>
     <axis xyz="-0.11117 0.020797 -0.99358"/>
-    <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727"/>
+    <limit lower="0" upper="3.14" effort="0.5" velocity="8.727"/>
   </joint>
 
 <!-- 分支2: J613 -->
@@ -280,7 +280,7 @@
   <parent link="arm1_J5_Link"/>
   <child link="arm1_J613_Link"/>
   <axis xyz="-0.11117 0.020797 -0.99358"/>
-  <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727"/>
+  <limit lower="0" upper="3.14" effort="0.5" velocity="8.727"/>
 </joint>
 
 <!-- 分支3: J621/622 -->
@@ -303,7 +303,7 @@
   <parent link="arm1_J5_Link"/>
   <child link="arm1_J621_Link"/>
   <axis xyz="0.11117 -0.020797 0.99358"/>
-  <limit lower="-1.57" upper="0" effort="0.17658" velocity="8.727"/>
+  <limit lower="-1.57" upper="0" effort="0.5" velocity="8.727"/>
   <mimic joint="arm1_J611" multiplier="1.0"/>
 </joint>
 
@@ -326,7 +326,7 @@
   <parent link="arm1_J621_Link"/>
   <child link="arm1_J622_Link"/>
   <axis xyz="-0.11117 0.020797 -0.99358"/>
-  <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727"/>
+  <limit lower="0" upper="3.14" effort="0.5" velocity="8.727"/>
 </joint>
 <!-- 分支4: J623 -->
 <link name="arm1_J623_Link">
@@ -348,7 +348,7 @@
   <parent link="arm1_J5_Link"/>
   <child link="arm1_J623_Link"/>
   <axis xyz="-0.11117 0.020797 -0.99358"/>
-  <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727"/>
+  <limit lower="0" upper="3.14" effort="0.5" velocity="8.727"/>
 </joint>
 
   <!-- ========== 臂2 ========== -->
@@ -403,7 +403,7 @@
     <parent link="arm2_base_Link"/>
     <child link="arm2_J1_Link"/>
     <axis xyz="0 0 -1"/>
-    <limit lower="0" upper="6.28" effort="0.17658" velocity="8.727"/>
+    <limit lower="0" upper="6.28" effort="0.5" velocity="8.727"/>
   </joint>
 
   <link name="arm2_J2_Link">
@@ -434,7 +434,7 @@
     <parent link="arm2_J1_Link"/>
     <child link="arm2_J2_Link"/>
     <axis xyz="0.11445 -0.99343 0"/>
-    <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727"/>
+    <limit lower="-1.57" upper="1.57" effort="0.5" velocity="8.727"/>
   </joint>
 
   <link name="arm2_J3_Link">
@@ -465,7 +465,7 @@
     <parent link="arm2_J2_Link"/>
     <child link="arm2_J3_Link"/>
     <axis xyz="0.11445 -0.99343 0"/>
-    <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727"/>
+    <limit lower="-1.57" upper="1.57" effort="0.5" velocity="8.727"/>
   </joint>
 
   <link name="arm2_J4_Link">
@@ -496,7 +496,7 @@
     <parent link="arm2_J3_Link"/>
     <child link="arm2_J4_Link"/>
     <axis xyz="0.90747 0.10454 0.40691"/>
-    <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727"/>
+    <limit lower="-1.57" upper="1.57" effort="0.5" velocity="8.727"/>
   </joint>
 
   <link name="arm2_J5_Link">
@@ -534,7 +534,7 @@
     <parent link="arm2_J4_Link"/>
     <child link="arm2_J5_Link"/>
     <axis xyz="-0.12998 0.99089 0.035284"/>
-    <limit lower="-1.57" upper="1.57" effort="0.17658" velocity="8.727"/>
+    <limit lower="-1.57" upper="1.57" effort="0.5" velocity="8.727"/>
   </joint>
 
   <link name="arm2_J611_Link">
@@ -565,7 +565,7 @@
     <parent link="arm2_J5_Link"/>
     <child link="arm2_J611_Link"/>
     <axis xyz="-0.11117 0.020797 -0.99358"/>
-    <limit lower="-1.57" upper="0" effort="0.17658" velocity="8.727"/>
+    <limit lower="-1.57" upper="0" effort="0.5" velocity="8.727"/>
   </joint>
 
   <link name="arm2_J612_Link">
@@ -596,7 +596,7 @@
     <parent link="arm2_J611_Link"/>
     <child link="arm2_J612_Link"/>
     <axis xyz="-0.11117 0.020797 -0.99358"/>
-    <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727"/>
+    <limit lower="0" upper="3.14" effort="0.5" velocity="8.727"/>
   </joint>
 
 <!-- 分支2: J613 -->
@@ -619,7 +619,7 @@
   <parent link="arm2_J5_Link"/>
   <child link="arm2_J613_Link"/>
   <axis xyz="-0.11117 0.020797 -0.99358"/>
-  <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727"/>
+  <limit lower="0" upper="3.14" effort="0.5" velocity="8.727"/>
 </joint>
 
 <!-- 分支3: J621/622 -->
@@ -642,7 +642,7 @@
   <parent link="arm2_J5_Link"/>
   <child link="arm2_J621_Link"/>
   <axis xyz="0.11117 -0.020797 0.99358"/>
-  <limit lower="-1.57" upper="0" effort="0.17658" velocity="8.727"/>
+  <limit lower="-1.57" upper="0" effort="0.5" velocity="8.727"/>
   <mimic joint="arm2_J611" multiplier="1.0"/>
 </joint>
 
@@ -665,7 +665,7 @@
   <parent link="arm2_J621_Link"/>
   <child link="arm2_J622_Link"/>
   <axis xyz="-0.11117 0.020797 -0.99358"/>
-  <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727"/>
+  <limit lower="0" upper="3.14" effort="0.5" velocity="8.727"/>
 </joint>
 
 <!-- 分支4: J623 -->
@@ -688,7 +688,7 @@
   <parent link="arm2_J5_Link"/>
   <child link="arm2_J623_Link"/>
   <axis xyz="-0.11117 0.020797 -0.99358"/>
-  <limit lower="0" upper="3.14" effort="0.17658" velocity="8.727"/>
+  <limit lower="0" upper="3.14" effort="0.5" velocity="8.727"/>
 </joint>
 
   <!-- ========== 臂3 ========== -->

@@ -68,6 +68,12 @@ class ThreeArmURDFAvoidanceScheduler(object):
             "arm3": moveit_commander.MoveGroupCommander(self.cfg["arm3"]["group"]),
         }
 
+        self.gripper_groups = {
+            "arm1": moveit_commander.MoveGroupCommander("arm1_gripper"),
+            "arm2": moveit_commander.MoveGroupCommander("arm2_gripper"),
+            "arm3": moveit_commander.MoveGroupCommander("arm3_gripper"),
+        }
+
         # 假设你的 SRDF 中存在总夹爪组
         self.gripper_group = moveit_commander.MoveGroupCommander("all_grippers_group")
 
@@ -82,12 +88,13 @@ class ThreeArmURDFAvoidanceScheduler(object):
         # =====================================================
         for arm_id, group in self.arm_groups.items():
             group.set_pose_reference_frame(self.world_frame)
-            group.set_planning_time(5.0)
-            group.set_num_planning_attempts(10)
+            group.set_end_effector_link(self.cfg[arm_id]["tcp"])
+            group.set_planning_time(12.0)
+            group.set_num_planning_attempts(20)
             group.set_goal_position_tolerance(0.005)
-            group.set_goal_orientation_tolerance(0.20)
-            group.set_max_velocity_scaling_factor(0.12)
-            group.set_max_acceleration_scaling_factor(0.12)
+            group.set_goal_orientation_tolerance(0.8)
+            group.set_max_velocity_scaling_factor(0.03)
+            group.set_max_acceleration_scaling_factor(0.03)
             try:
                 group.set_planning_pipeline_id("ompl")
             except Exception:
@@ -98,31 +105,39 @@ class ThreeArmURDFAvoidanceScheduler(object):
                 pass
             group.allow_replanning(True)
 
-        self.gripper_group.set_planning_time(2.0)
-        self.gripper_group.set_num_planning_attempts(5)
+        self.gripper_group.set_planning_time(4.0)
+        self.gripper_group.set_num_planning_attempts(8)
+        self.gripper_group.allow_replanning(True)
+
+        for arm_id, ggroup in self.gripper_groups.items():
+            ggroup.set_planning_time(4.0)
+            ggroup.set_num_planning_attempts(8)
+            ggroup.set_max_velocity_scaling_factor(0.05)
+            ggroup.set_max_acceleration_scaling_factor(0.05)
+            ggroup.allow_replanning(True)
 
         # =====================================================
         # 分层高度（按你的 URDF 保守设置）
         # =====================================================
-        self.approach_height = 0.04
-        self.transport_layer = 0.18
-        self.safe_layer = 0.10
-        self.place_approach_height = 0.04
+        self.approach_height = 0.08
+        self.transport_layer = 0.22
+        self.safe_layer = 0.18
+        self.place_approach_height = 0.08
+        self.pick_min_z = 0.07
+        self.place_min_z = 0.07
+
+        # =====================================================
+        # 演示用方块
+        # =====================================================
+        self.target_object_size = (0.02, 0.02, 0.02)
+        self.target_object_half_height = self.target_object_size[2] / 2.0
 
         # =====================================================
         # 夹爪角度
         # 需要你根据实际再微调
         # =====================================================
-        self.open_angle = -0.85
-        self.close_angle = -0.18
-
-        # 末端固定姿态，先用一个稳定可规划的姿态跑通闭环
-        self.fixed_tcp_orientation = {
-            "x": 0.01947845,
-            "y": 0.00088976,
-            "z": 0.99742708,
-            "w": 0.06898569,
-        }
+        self.open_angle = -0.60
+        self.close_angle = -0.22
 
         # =====================================================
         # 视觉坐标补偿
@@ -134,9 +149,9 @@ class ThreeArmURDFAvoidanceScheduler(object):
 
         # 末端抓取补偿
         self.grasp_z_offset = {
-            "arm1": 0.02,
-            "arm2": 0.02,
-            "arm3": 0.02,
+            "arm1": 0.06,
+            "arm2": 0.06,
+            "arm3": 0.06,
         }
 
         self.grasp_xy_offset = {
@@ -150,9 +165,10 @@ class ThreeArmURDFAvoidanceScheduler(object):
         # 尽量放在各自相对独立区域
         # =====================================================
         self.place_points = {
-            "arm1": [0.28, 0.18, 0.03],
-            "arm2": [-0.02, 0.26, 0.03],
-            "arm3": [-0.02, -0.26, 0.03],
+            "arm1": [0.28, 0.18, 0.07],
+            "arm2": [-0.02, 0.26, 0.07],
+            # arm3 在低位放置时容易和自身体节发生碰撞，稍微抬高一点更稳
+            "arm3": [-0.02, -0.26, 0.10],
         }
 
         # =====================================================
@@ -335,19 +351,97 @@ class ThreeArmURDFAvoidanceScheduler(object):
             rate.sleep()
 
     def get_target_xyz(self, arm_id):
+        xyz = self.get_world_target_xyz(arm_id)
+        if xyz is None:
+            return None
+
+        x, y, z = xyz
+        dx, dy = self.grasp_xy_offset[arm_id]
+        x += dx
+        y += dy
+        z += self.grasp_z_offset[arm_id]
+        z = max(z, self.pick_min_z)
+
+        return [x, y, z]
+
+    def get_world_target_xyz(self, arm_id):
         with self.lock:
             msg = self.targets[arm_id]
             if msg is None:
                 return None
 
-            x, y, z = msg.point.x, msg.point.y, msg.point.z
+            return [msg.point.x, msg.point.y, msg.point.z]
 
-        dx, dy = self.grasp_xy_offset[arm_id]
-        x += dx
-        y += dy
-        z += self.grasp_z_offset[arm_id]
+    def get_target_object_name(self, arm_id):
+        return "%s_target_object" % arm_id
 
-        return [x, y, z]
+    def make_pose_stamped(self, x, y, z, roll=0.0, pitch=0.0, yaw=0.0):
+        pose = PoseStamped()
+        pose.header.frame_id = self.world_frame
+        pose.header.stamp = rospy.Time.now()
+        pose.pose = self.make_pose(x, y, z, roll, pitch, yaw)
+        return pose
+
+    def remove_target_object(self, arm_id):
+        object_name = self.get_target_object_name(arm_id)
+        tcp_link = self.cfg[arm_id]["tcp"]
+
+        with self.exec_lock:
+            try:
+                self.scene.remove_attached_object(tcp_link, object_name)
+            except Exception:
+                pass
+            self.scene.remove_world_object(object_name)
+
+        rospy.sleep(0.2)
+
+    def add_target_object(self, arm_id, xyz):
+        object_name = self.get_target_object_name(arm_id)
+        pose = self.make_pose_stamped(xyz[0], xyz[1], xyz[2])
+
+        self.remove_target_object(arm_id)
+
+        with self.exec_lock:
+            self.scene.add_box(object_name, pose, size=self.target_object_size)
+
+        rospy.sleep(0.3)
+        return True
+
+    def attach_target_object(self, arm_id):
+        object_name = self.get_target_object_name(arm_id)
+        tcp_link = self.cfg[arm_id]["tcp"]
+
+        touch_links = []
+        try:
+            touch_links.extend(self.robot.get_link_names(group=self.gripper_groups[arm_id].get_name()))
+        except Exception as e:
+            rospy.logwarn("[%s] 获取夹爪 touch_links 失败: %s", arm_id, str(e))
+
+        touch_links.append(tcp_link)
+        touch_links = list(dict.fromkeys(touch_links))
+
+        with self.exec_lock:
+            self.scene.attach_box(tcp_link, object_name, touch_links=touch_links)
+
+        rospy.sleep(0.3)
+        return True
+
+    def detach_target_object(self, arm_id, place_xyz):
+        object_name = self.get_target_object_name(arm_id)
+        tcp_link = self.cfg[arm_id]["tcp"]
+        place_pose = self.make_pose_stamped(
+            place_xyz[0],
+            place_xyz[1],
+            self.target_object_half_height,
+        )
+
+        with self.exec_lock:
+            self.scene.remove_attached_object(tcp_link, object_name)
+            self.scene.remove_world_object(object_name)
+            self.scene.add_box(object_name, place_pose, size=self.target_object_size)
+
+        rospy.sleep(0.3)
+        return True
 
     def get_current_tcp_pose(self, arm_id):
         tcp = self.cfg[arm_id]["tcp"]
@@ -356,14 +450,16 @@ class ThreeArmURDFAvoidanceScheduler(object):
     def update_current_xyz(self, arm_id):
         try:
             pose = self.get_current_tcp_pose(arm_id)
+            xyz = [pose.position.x, pose.position.y, pose.position.z]
+            if not self.is_valid_xyz(xyz):
+                return False
+
             with self.lock:
-                self.arm_state[arm_id]["current_xyz"] = [
-                    pose.position.x,
-                    pose.position.y,
-                    pose.position.z
-                ]
+                self.arm_state[arm_id]["current_xyz"] = xyz
+            return True
         except Exception as e:
             rospy.logwarn("[%s] 更新当前TCP失败: %s", arm_id, str(e))
+            return False
 
     def make_pose(self, x, y, z, roll=0.0, pitch=0.0, yaw=0.0):
         pose = Pose()
@@ -383,15 +479,8 @@ class ThreeArmURDFAvoidanceScheduler(object):
         return math.atan2(y - by, x - bx)
 
     def make_facing_pose(self, arm_id, xyz):
-        pose = Pose()
-        pose.position.x = xyz[0]
-        pose.position.y = xyz[1]
-        pose.position.z = xyz[2]
-        pose.orientation.x = self.fixed_tcp_orientation["x"]
-        pose.orientation.y = self.fixed_tcp_orientation["y"]
-        pose.orientation.z = self.fixed_tcp_orientation["z"]
-        pose.orientation.w = self.fixed_tcp_orientation["w"]
-        return pose
+        yaw = self.compute_yaw_to_target(arm_id, xyz)
+        return self.make_pose(xyz[0], xyz[1], xyz[2], 0.0, 0.0, yaw)
 
     def distance_xyz(self, p1, p2):
         if p1 is None or p2 is None:
@@ -400,6 +489,17 @@ class ThreeArmURDFAvoidanceScheduler(object):
         dy = p1[1] - p2[1]
         dz = p1[2] - p2[2]
         return math.sqrt(dx * dx + dy * dy + dz * dz)
+
+    def is_valid_xyz(self, xyz):
+        if xyz is None or len(xyz) != 3:
+            return False
+        if not all(math.isfinite(v) for v in xyz):
+            return False
+        return not (
+            abs(xyz[0]) < 1e-9 and
+            abs(xyz[1]) < 1e-9 and
+            abs(xyz[2]) < 1e-9
+        )
 
     def target_is_reasonable(self, arm_id, xyz):
         x, y, z = xyz
@@ -433,10 +533,7 @@ class ThreeArmURDFAvoidanceScheduler(object):
 
         with self.exec_lock:
             group.set_start_state_to_current_state()
-            group.set_position_target(
-                [target_pose.position.x, target_pose.position.y, target_pose.position.z],
-                end_effector_link=tcp_link,
-            )
+            group.set_pose_target(target_pose, end_effector_link=tcp_link)
 
             for attempt in range(3):
                 rospy.loginfo("[%s] 第%d次规划 -> tcp=%s", arm_id, attempt + 1, tcp_link)
@@ -497,19 +594,24 @@ class ThreeArmURDFAvoidanceScheduler(object):
     # =====================================================
     def set_single_gripper(self, arm_id, angle):
         joint_name = self.cfg[arm_id]["gripper_joint"]
+        gripper_group = self.gripper_groups[arm_id]
 
         with self.exec_lock:
             try:
-                active_joints = self.gripper_group.get_active_joints()
-                rospy.loginfo("[%s] all_grippers_group joints = %s", arm_id, active_joints)
+                active_joints = gripper_group.get_active_joints()
+                rospy.loginfo("[%s] %s joints = %s", arm_id, gripper_group.get_name(), active_joints)
 
                 if joint_name not in active_joints:
-                    rospy.logerr("[%s] 夹爪关节 %s 不在 all_grippers_group 中", arm_id, joint_name)
+                    rospy.logerr("[%s] 夹爪关节 %s 不在 %s 中", arm_id, joint_name, gripper_group.get_name())
                     return False
 
-                self.gripper_group.set_joint_value_target({joint_name: angle})
-                ok = self.gripper_group.go(wait=True)
-                self.gripper_group.stop()
+                gripper_group.stop()
+                gripper_group.clear_pose_targets()
+                gripper_group.set_start_state_to_current_state()
+                gripper_group.set_joint_value_target({joint_name: angle})
+                ok = gripper_group.go(wait=True)
+                gripper_group.stop()
+                gripper_group.clear_pose_targets()
                 rospy.sleep(0.2)
                 return ok
 
@@ -679,6 +781,9 @@ class ThreeArmURDFAvoidanceScheduler(object):
         with self.lock:
             place_xyz = copy.deepcopy(self.arm_state[arm_id]["place_xyz"])
 
+        if place_xyz is not None:
+            place_xyz[2] = max(place_xyz[2], self.place_min_z)
+
         if pick_xyz is None:
             rospy.logerr("[%s] 没有抓取目标", arm_id)
             with self.lock:
@@ -687,6 +792,19 @@ class ThreeArmURDFAvoidanceScheduler(object):
 
         if not self.target_is_reasonable(arm_id, pick_xyz):
             rospy.logerr("[%s] 抓取目标不合理: %s", arm_id, str(pick_xyz))
+            with self.lock:
+                self.arm_state[arm_id]["status"] = "ERROR"
+            return
+
+        world_target_xyz = self.get_world_target_xyz(arm_id)
+        if world_target_xyz is None:
+            rospy.logerr("[%s] 没有可用于场景的目标点", arm_id)
+            with self.lock:
+                self.arm_state[arm_id]["status"] = "ERROR"
+            return
+
+        if not self.add_target_object(arm_id, world_target_xyz):
+            rospy.logerr("[%s] 添加抓取物体失败", arm_id)
             with self.lock:
                 self.arm_state[arm_id]["status"] = "ERROR"
             return
@@ -727,6 +845,12 @@ class ThreeArmURDFAvoidanceScheduler(object):
         self.set_phase(arm_id, "RUNNING", "CLOSE_GRIPPER", pick_xyz)
         self.close_gripper(arm_id)
         rospy.sleep(0.4)
+
+        if not self.attach_target_object(arm_id):
+            rospy.logerr("[%s] 夹持物体失败", arm_id)
+            with self.lock:
+                self.arm_state[arm_id]["status"] = "ERROR"
+            return
 
         # 4 抬升到运输层
         lift_xyz = [pick_xyz[0], pick_xyz[1], self.transport_layer]
@@ -792,6 +916,12 @@ class ThreeArmURDFAvoidanceScheduler(object):
         self.open_gripper(arm_id)
         rospy.sleep(0.3)
 
+        if not self.detach_target_object(arm_id, place_xyz):
+            rospy.logerr("[%s] 释放物体失败", arm_id)
+            with self.lock:
+                self.arm_state[arm_id]["status"] = "ERROR"
+            return
+
         # 11 回到运输层
         return_xyz = [place_xyz[0], place_xyz[1], self.transport_layer]
         self.set_phase(arm_id, "RUNNING", "RETURN", return_xyz)
@@ -848,15 +978,10 @@ class ThreeArmURDFAvoidanceScheduler(object):
         monitor_thread.daemon = True
         monitor_thread.start()
 
-        threads = []
+        # 先顺序执行，避免多臂同时进入危险区导致轨迹互撞。
         for arm_id in ["arm1", "arm2", "arm3"]:
-            t = threading.Thread(target=self.arm_task, args=(arm_id,))
-            t.daemon = True
-            t.start()
-            threads.append(t)
-
-        for t in threads:
-            t.join()
+            rospy.loginfo("[%s] 顺序启动任务", arm_id)
+            self.arm_task(arm_id)
 
         self.running = False
         rospy.loginfo("所有机械臂任务执行结束")

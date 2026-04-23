@@ -1,12 +1,31 @@
 arm1_group_controller:
   type: effort_controllers/JointTrajectoryController
+  state_publish_rate: 50
+  action_monitor_rate: 20
   joints:
     - arm1_J1
     - arm1_J2
     - arm1_J3
     - arm1_J4
     - arm1_J5
-    - arm1_J621
+  constraints:
+    goal_time: 5.0
+    stopped_velocity_tolerance: 0.15
+    arm1_J1:
+      trajectory: 0.8
+      goal: 0.15
+    arm1_J2:
+      trajectory: 0.8
+      goal: 0.15
+    arm1_J3:
+      trajectory: 0.8
+      goal: 0.15
+    arm1_J4:
+      trajectory: 0.8
+      goal: 0.15
+    arm1_J5:
+      trajectory: 0.8
+      goal: 0.15
   gains:
     arm1_J1:
       p: 100
@@ -33,20 +52,52 @@ arm1_group_controller:
       d: 1
       i: 1
       i_clamp: 1
-    arm1_J621:
+arm1_gripper_controller:
+  type: effort_controllers/JointTrajectoryController
+  state_publish_rate: 50
+  action_monitor_rate: 20
+  joints:
+    - arm1_J611
+  constraints:
+    goal_time: 5.0
+    stopped_velocity_tolerance: 0.15
+    arm1_J611:
+      trajectory: 0.8
+      goal: 0.15
+  gains:
+    arm1_J611:
       p: 100
       d: 1
       i: 1
       i_clamp: 1
 arm2_group_controller:
   type: effort_controllers/JointTrajectoryController
+  state_publish_rate: 50
+  action_monitor_rate: 20
   joints:
     - arm2_J1
     - arm2_J2
     - arm2_J3
     - arm2_J4
     - arm2_J5
-    - arm2_J621
+  constraints:
+    goal_time: 5.0
+    stopped_velocity_tolerance: 0.15
+    arm2_J1:
+      trajectory: 0.8
+      goal: 0.15
+    arm2_J2:
+      trajectory: 0.8
+      goal: 0.15
+    arm2_J3:
+      trajectory: 0.8
+      goal: 0.15
+    arm2_J4:
+      trajectory: 0.8
+      goal: 0.15
+    arm2_J5:
+      trajectory: 0.8
+      goal: 0.15
   gains:
     arm2_J1:
       p: 100
@@ -73,20 +124,52 @@ arm2_group_controller:
       d: 1
       i: 1
       i_clamp: 1
-    arm2_J621:
+arm2_gripper_controller:
+  type: effort_controllers/JointTrajectoryController
+  state_publish_rate: 50
+  action_monitor_rate: 20
+  joints:
+    - arm2_J611
+  constraints:
+    goal_time: 5.0
+    stopped_velocity_tolerance: 0.15
+    arm2_J611:
+      trajectory: 0.8
+      goal: 0.15
+  gains:
+    arm2_J611:
       p: 100
       d: 1
       i: 1
       i_clamp: 1
 arm3_group_controller:
   type: effort_controllers/JointTrajectoryController
+  state_publish_rate: 50
+  action_monitor_rate: 20
   joints:
     - arm3_J1
     - arm3_J2
     - arm3_J3
     - arm3_J4
     - arm3_J5
-    - arm3_J621
+  constraints:
+    goal_time: 5.0
+    stopped_velocity_tolerance: 0.15
+    arm3_J1:
+      trajectory: 0.8
+      goal: 0.15
+    arm3_J2:
+      trajectory: 0.8
+      goal: 0.15
+    arm3_J3:
+      trajectory: 0.8
+      goal: 0.15
+    arm3_J4:
+      trajectory: 0.8
+      goal: 0.15
+    arm3_J5:
+      trajectory: 0.8
+      goal: 0.15
   gains:
     arm3_J1:
       p: 100
@@ -113,7 +196,20 @@ arm3_group_controller:
       d: 1
       i: 1
       i_clamp: 1
-    arm3_J621:
+arm3_gripper_controller:
+  type: effort_controllers/JointTrajectoryController
+  state_publish_rate: 50
+  action_monitor_rate: 20
+  joints:
+    - arm3_J611
+  constraints:
+    goal_time: 5.0
+    stopped_velocity_tolerance: 0.15
+    arm3_J611:
+      trajectory: 0.8
+      goal: 0.15
+  gains:
+    arm3_J611:
       p: 100
       d: 1
       i: 1

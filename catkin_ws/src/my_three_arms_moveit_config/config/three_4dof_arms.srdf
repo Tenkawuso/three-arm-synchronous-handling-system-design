@@ -40,7 +40,7 @@
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="arm1_ee" parent_link="arm1_tcp" group="arm1_gripper" parent_group="arm1_group"/>
     <end_effector name="arm2_ee" parent_link="arm2_tcp" group="arm2_gripper" parent_group="arm2_group"/>
-    <end_effector name="arm3_ee" parent_link="arm3_tcp" group="arm1_gripper" parent_group="arm3_group"/>
+    <end_effector name="arm3_ee" parent_link="arm3_tcp" group="arm3_gripper" parent_group="arm3_group"/>
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
     <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="arm1_base_Link"/>
     <!--PASSIVE JOINT: Purpose: this element is used to mark joints that are not actuated-->

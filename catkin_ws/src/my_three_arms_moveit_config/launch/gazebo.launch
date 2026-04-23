@@ -12,8 +12,8 @@
     <arg name="paused" value="true"/>
   </include>
 
-  <!-- Set the robot urdf on the parameter server -->
-  <param name="robot_description" textfile="$(find my_arm_description)/urdf/three_arms_new.urdf" />
+  <!-- Set the Gazebo-ready robot urdf on the parameter server -->
+  <param name="robot_description" textfile="$(find my_three_arms_moveit_config)/config/gazebo_three_4dof_arms.urdf" />
 
   <!-- Unpause the simulation after loading the robot model -->
   <arg name="unpause" value="$(eval '' if arg('paused') else '-unpause')" />
